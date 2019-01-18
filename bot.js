@@ -1,7 +1,7 @@
 const TB = require("twitch-bot");
 require("dotenv").config();
 
-var messageGuess;
+var guesses = [{}];
 const Bot = new TB({
   username: process.env.BOT_USERNAME,
   oauth: process.env.BOT_OAUTH,
@@ -31,10 +31,15 @@ Bot.on("message", chatter => {
             chatter.username
           } has started the 30 min countdown! Place your time bets now using: !time [hours:mins]`
         );
+
         started = true;
       } else if (started === true && wholeMessage[1] === "end") {
         Bot.say(`${chatter.username} has ended the guessing.`);
         started = false;
+      } else if (started === true && wholeMessage[1] === "results") {
+        guesses.forEach(() => {
+          console.log(guesses);
+        });
       }
     }
   }
@@ -47,6 +52,8 @@ Bot.on("message", chatter => {
 
         if (!isNaN(guess[0]) && !isNaN(guess[1])) {
           Bot.say(`@${guessedUser} has guessed ${guess[0]}:${guess[1]}`);
+          guess = parseInt((guess = guess[0] + guess[1]));
+          userGuesses(guessedUser, guess);
         } else {
           Bot.say(`@${guessedUser}, please only enter numbers!`);
         }
@@ -54,4 +61,14 @@ Bot.on("message", chatter => {
     }
   }
 });
-function userGuesses(user, guess) {}
+function userGuesses(user, guess2) {
+  // if(guesses[user] != user){
+  //   guesses[user] = {};
+  //   var entries = ip[ipID];
+  // };
+  // guesses["guess3"] = guess2;
+
+  if (user == null && guess2 == null) {
+    return guesses;
+  }
+}
